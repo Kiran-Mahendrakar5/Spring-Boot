@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: Xworkzodc@123
+    url: jdbc:mysql://localhost:3306/xworkz
+    username: root
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format-sql: true
+    show-sql: true
+server:
+  port: 8081
