@@ -1,6 +1,7 @@
 package com.xworkz.instuite.instuite.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ import com.xworkz.instuite.instuite.service.ServiceImpl;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173") // Ensure this matches your React app's port
-//@RequestMapping("api/")
+
 public class InstuiteController {
 
 	@Autowired
@@ -72,19 +73,47 @@ public class InstuiteController {
 		List<InstuiteDto> fn = service.findByName(name);
 		return fn;
 	}
-
+	
 	@PutMapping("/update/{id}")
-	public String update(@RequestParam String name, @PathVariable int id) {
+	public String update(@PathVariable int id, @RequestParam String name) {
+	    System.out.println("Updating ID: " + id + " with Name: " + name);
 
-		int update = service.updateNameById(name, id);
-		if (update == 1) {
-			return "updated succefully";
-		}
-		return "not updated";
+	    int update = service.updateNameById(name, id);
+	    if (update > 0) {
+	        return "Updated successfully";
+	    }
+	    return "Not updated";
 	}
 
+
+
+//	@PutMapping("/update/{id}")
+//	public String update(@RequestParam String name, @PathVariable int id) {
+//
+//		int update = service.updateNameById(name, id);
+//		if (update >0) {
+//			return "updated succefully";
+//		}
+//		return "not updated";
+//	}
+
+//	@DeleteMapping("/deleteNameById/{id}")
+//	public int deleteNameById(@RequestParam String name, @PathVariable int id) {
+//		return service.deleteNameById(name, id);
+//	}
+	
+//	@DeleteMapping("/deleteNameById/{id}")
+//	public int deleteNameById(@PathVariable int id) {
+//	    return service.deleteNameById(null, id); // Adjust the service method to handle null for name
+//	}
+	
 	@DeleteMapping("/deleteNameById/{id}")
-	public int deleteNameById(@RequestParam String name, @PathVariable int id) {
-		return service.deleteNameById(name, id);
+	public String deleteNameById(@RequestParam(required = false) String name, @PathVariable int id) {
+	    int result = service.deleteNameById(name, id);
+	    if (result > 0) {
+	        return "Deleted successfully";
+	    }
+	    return "Deletion failed no matching record found";
 	}
+
 }
