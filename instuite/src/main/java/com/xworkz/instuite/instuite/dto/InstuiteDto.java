@@ -18,20 +18,25 @@ public class InstuiteDto implements Serializable{
 	private String name;
 	private String location;
 	private String Type;
+	private boolean isActive = true;
 	public InstuiteDto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public InstuiteDto(int id, String name, String location, String type) {
+	public InstuiteDto(int id, String name, String location, String type, boolean isActive) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.location = location;
 		Type = type;
+		this.isActive = isActive;
 	}
+	
+	
 	@Override
 	public String toString() {
-		return "InstuiteDto [id=" + id + ", name=" + name + ", location=" + location + ", Type=" + Type + "]";
+		return "InstuiteDto [id=" + id + ", name=" + name + ", location=" + location + ", Type=" + Type + ", isActive="
+				+ isActive + "]";
 	}
 	public int getId() {
 		return id;
@@ -57,7 +62,12 @@ public class InstuiteDto implements Serializable{
 	public void setType(String type) {
 		Type = type;
 	}
-	
+	public boolean isActive() {
+		return isActive;
+	}
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 	
 	
 	
