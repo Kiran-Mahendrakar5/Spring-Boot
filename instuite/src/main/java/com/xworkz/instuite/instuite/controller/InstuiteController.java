@@ -13,14 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.xworkz.instuite.instuite.dto.InstuiteDto;
 import com.xworkz.instuite.instuite.service.ServiceImpl;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
+//@RequestMapping("/api")
 
 public class InstuiteController {
 
@@ -29,8 +32,25 @@ public class InstuiteController {
 
 	public InstuiteController() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
+	
+
+	
+	@PostMapping("/uploadExcel")
+//	@RequestMapping(value = "/uploadExcel", method = {RequestMethod.GET, RequestMethod.POST})
+
+	public ResponseEntity<String> uploadExcel(@RequestParam("file") MultipartFile file) {
+	    try {
+	        String message = service.saveExcelData(file);
+	        return ResponseEntity.ok(message);
+	    } catch (RuntimeException e) {
+	        return ResponseEntity.status(500).body("Error: " + e.getMessage());
+	    }
+	}
+
+
+
 
 	@PostMapping("/save")
 //	@RequestMapping(value = "/getOtp", method = RequestMethod.GET)
@@ -43,40 +63,25 @@ public class InstuiteController {
 
 	}
 
-//	@GetMapping("/read")
-//	public Iterable<InstuiteDto> read() {
-//		Iterable<InstuiteDto> read = service.read();
-//		return read;
-//
-//	}
 	@GetMapping("/read")
 	public Iterable<InstuiteDto> read() {
 		Iterable<InstuiteDto> read = service.read();
-		System.out.println("Fetched Data: " + read); // Log the data to check what is returned
+		System.out.println("Fetched Data: " + read);
 		return read;
 	}
 
-//	@GetMapping("/reads")
-//	public Iterable<InstuiteDto> reads() {
-//		Iterable<InstuiteDto> readingshow = service.reads(); // This will call the service, which uses repo.findAll()
-//		System.out.println("Fetched Data: " + readingshow);
-//		return readingshow;
-//	}
 	@GetMapping("/reads")
 	public ResponseEntity<?> reads() {
-	    Iterable<InstuiteDto> readingshow = service.reads(); // Fetch active records from service
+		Iterable<InstuiteDto> readingshow = service.reads();
 
-	    // Check if there are any active records
-	    if (((List<InstuiteDto>) readingshow).size() > 0) {
-	        System.out.println("Fetched Active Data: " + readingshow);
-	        return ResponseEntity.ok(readingshow); // Return the active records
-	    } else {
-	        System.out.println("No active records found.");
-	        return ResponseEntity.status(404).body("No active records found."); // Return a not found message if no active records
-	    }
+		if (((List<InstuiteDto>) readingshow).size() > 0) {
+			System.out.println("Fetched Active Data: " + readingshow);
+			return ResponseEntity.ok(readingshow);
+		} else {
+			System.out.println("No active records found.");
+			return ResponseEntity.status(404).body("No active records found.");
+		}
 	}
-
-
 
 	@GetMapping("/findName/{name}")
 	public List<InstuiteDto> findName(@PathVariable String name) {
@@ -84,33 +89,20 @@ public class InstuiteController {
 		return fn;
 	}
 
-//	@PutMapping("/update/{id}")
-//	public String update(@PathVariable int id, @RequestParam String name) {
-//		System.out.println("Updating ID: " + id + " with Name: " + name);
-//
-//		int update = service.updateNameById(name, id);
-//		if (update > 0) {
-//			return "Updated successfully";
-//		}
-//		return "Not updated";
-//	}
-	
 	@PutMapping("/update/{id}")
 	public String update(@PathVariable int id, @RequestParam String name) {
-	    System.out.println("Updating record with ID: " + id + " and Name: " + name);
-	    
-	    int update = service.updateNameById(name, id);
-	   
-	    
-	    if (update > 0) {
-	        System.out.println("Update successful");
-	        return "Updated successfully";
-	    } else {
-	        System.out.println("Update failed: ID not found or no changes made.");
-	        return "Not updated";
-	    }
-	}
+		System.out.println("Updating record with ID: " + id + " and Name: " + name);
 
+		int update = service.updateNameById(name, id);
+
+		if (update > 0) {
+			System.out.println("Update successful");
+			return "Updated successfully";
+		} else {
+			System.out.println("Update failed: ID not found or no changes made.");
+			return "Not updated";
+		}
+	}
 
 	@DeleteMapping("/deleteNameById/{id}")
 	public String deleteNameById(@RequestParam(required = false) String name, @PathVariable int id) {
@@ -122,37 +114,3 @@ public class InstuiteController {
 	}
 
 }
-
-
-//Internal Flow for a Request
-//Client Request → Controller
-//The client sends a request, and the controller handles it.
-//Controller → Service
-//The controller delegates the logic to the service.
-//Service → Repository
-//If database interaction is needed, the service calls the repository.
-//Repository → Database
-//The repository interacts with the database and retrieves data.
-//Database → Repository → Service → DTO
-//The retrieved data is passed back through the repository and service layers, often converted to a DTO.
-//Service → Controller → Response
-//The final data is returned to the controller, which sends it back as an HTTP response.
-//Illustration of Internal Flow
-//plaintext
-//Copy code
-//Client Request (React App)
-//        ↓
-//[Controller] → Handles HTTP Request
-//        ↓
-//[Service] → Executes Business Logic
-//        ↓
-//[Repository] → Interacts with the Database
-//        ↓
-//[Database] → Returns Data to Repository
-//        ↑
-//[Repository → Service → DTO]
-//        ↑
-//[Controller]
-//        ↑
-//Client Response (React App)
-
