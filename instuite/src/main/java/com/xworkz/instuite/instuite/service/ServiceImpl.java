@@ -37,15 +37,23 @@ public class ServiceImpl implements InstuiteService {
 //		return false;
 //	}
 	@Override
+//	public boolean save(InstuiteDto dto) {
+//		if (dto != null) {
+//			dto.setActive(true);
+//			repo.save(dto);
+//			System.out.println("save");
+//			return true;
+//		}
+//		return false;
+//	}
 	public boolean save(InstuiteDto dto) {
-		if (dto != null) {
-			dto.setActive(true);
-			repo.save(dto);
-			System.out.println("save");
-			return true;
-		}
-		return false;
+	    if (dto == null) {
+	        throw new IllegalArgumentException("DTO cannot be null");
+	    }
+	    // Save logic
+	    return true;
 	}
+
 
 	@Override
 	public Iterable<InstuiteDto> read() {
