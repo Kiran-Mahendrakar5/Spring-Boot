@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.xworkz.instuite.instuite.dto.InstuiteDto;
+import com.xworkz.instuite.instuite.service.InstuiteService;
 import com.xworkz.instuite.instuite.service.ServiceImpl;
 
 @RestController
@@ -27,19 +28,18 @@ import com.xworkz.instuite.instuite.service.ServiceImpl;
 
 public class InstuiteController {
 
+//	@Autowired
+//	ServiceImpl service;
 	@Autowired
-	ServiceImpl service;
+ InstuiteService service; // Use the interface, not ServiceImpl
+
 
 	public InstuiteController() {
 		super();
-		
+
 	}
-	
 
-	
 	@PostMapping("/uploadExcel")
-//	@RequestMapping(value = "/uploadExcel", method = {RequestMethod.GET, RequestMethod.POST})
-
 	public ResponseEntity<String> uploadExcel(@RequestParam("file") MultipartFile file) {
 	    try {
 	        String message = service.saveExcelData(file);
@@ -48,7 +48,6 @@ public class InstuiteController {
 	        return ResponseEntity.status(500).body("Error: " + e.getMessage());
 	    }
 	}
-
 
 
 
@@ -75,7 +74,7 @@ public class InstuiteController {
 		Iterable<InstuiteDto> readingshow = service.reads();
 
 		if (((List<InstuiteDto>) readingshow).size() > 0) {
-			System.out.println("Fetched Active Data: " + readingshow);
+//			System.out.println("Fetched Active Data: " + readingshow);
 			return ResponseEntity.ok(readingshow);
 		} else {
 			System.out.println("No active records found.");

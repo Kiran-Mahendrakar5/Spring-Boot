@@ -24,5 +24,7 @@ public interface InstuiteService {
 	public Iterable<InstuiteDto> reads() ;
 	
 	public String saveExcelData(MultipartFile file);
+	
+//	public Optional<InstuiteDto> findByNameAndLocationAndType(String name, String location, String type);
 
 }

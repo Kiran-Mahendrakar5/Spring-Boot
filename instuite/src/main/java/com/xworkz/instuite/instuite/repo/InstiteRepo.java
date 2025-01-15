@@ -1,6 +1,7 @@
 package com.xworkz.instuite.instuite.repo;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -46,5 +47,15 @@ public interface InstiteRepo extends JpaRepository<InstuiteDto, Integer> {
 
 	@Query("SELECT dto FROM InstuiteDto dto WHERE dto.isActive = true")
 	List<InstuiteDto> findAll();
+	
+//	@Transactional
+//	@Query("SELECT dto FROM InstuiteDto dto WHERE dto.name = :name AND dto.location = :location AND dto.type = :type")
+//	Optional<InstuiteDto> findByNameAndLocationAndType(@Param("name") String name, 
+//	                                                   @Param("location") String location, 
+//	                                                   @Param("type") String type);
+
+
+	
+	
 
 }
